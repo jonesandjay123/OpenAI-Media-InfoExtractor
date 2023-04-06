@@ -1,6 +1,9 @@
 import openai
 import os
 
+# Set the language of the transcription
+language = "zh"  # Use "en" for English and "zh" for Chinese
+
 # Read API key from file
 with open("api_key.txt", "r") as f:
     api_key = f.read().strip()
@@ -8,15 +11,16 @@ with open("api_key.txt", "r") as f:
 # Configure the OpenAI library with your API key
 openai.api_key = api_key
 
-def transcribe_audio(file_path):
+def transcribe_audio(file_path, language):
     with open(file_path, "rb") as audio_file:
-        transcript = openai.Audio.transcribe("whisper-1", audio_file)
+        prompt = "，。！？" if language == "zh" else ",.!?"
+        transcript = openai.Audio.transcribe("whisper-1", audio_file, prompt=prompt)
 
     return transcript.text
 
 # Replace 'path_to_audio_file' with the path to the downloaded audio file
 audio_file_path = 'audio/sample.mp3'
-transcript = transcribe_audio(audio_file_path)
+transcript = transcribe_audio(audio_file_path, language)
 
 if transcript is not None:
     # Create output directory if it doesn't exist
