@@ -1,24 +1,22 @@
+import torch
 import whisper
-import os
 
-def transcribe_audio(file_path):
-    model = whisper.load_model("base")
-    result = model.transcribe(file_path)
-    return result["text"]
+# 載入模型
+model = whisper.load_model("tiny")
 
-def main():
-    file_path = 'audio/sample.mp3'
-    output_dir = 'output'
-    output_filename = 'output_transcript.txt'
-    output_path = os.path.join(output_dir, output_filename)
-    print("Transcribing audio...")
-    transcription = transcribe_audio(file_path)
-    print("\nTranscription:\n", transcription)
+# 讀取音頻檔案並將其裁剪或填充為30秒
+audio = whisper.load_audio('audio/sample.mp3')
+audio = whisper.pad_or_trim(audio)
 
-    with open(output_path, 'w') as f:
-        f.write(transcription)
+# 計算對數梅爾頻譜圖並將其移動到與模型相同的設備上
+mel = whisper.log_mel_spectrogram(audio).to(model.device)
 
-    print("Transcription saved to", output_path)
+# 創建解碼選項
+# options = whisper.DecodingOptions()
+options = whisper.DecodingOptions(fp16 = False)
 
-if __name__ == "__main__":
-    main()
+# 使用解碼函數
+result = whisper.decode(model, mel, options)
+
+# 打印識別出的文本
+print(result.text)
