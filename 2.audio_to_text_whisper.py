@@ -21,6 +21,7 @@ num_segments = int(np.ceil(total_duration / segment_duration))
 
 # 初始化一個空字符串，用於存儲所有片段的識別結果
 full_transcript = ""
+timestamped_transcript = ""
 
 # 在循環外檢測語言
 audio_segment = audio[:segment_duration * 16000]
@@ -52,6 +53,10 @@ for i in tqdm.tqdm(range(num_segments)):
     # 將片段的識別結果添加到完整文本中
     full_transcript += result.text + " "
 
+    # 添加帶有時間戳的逐字稿
+    timestamp = f"[{i * segment_duration // 60:02d}:{i * segment_duration % 60:02d}]"
+    timestamped_transcript += timestamp + result.text + "\n"
+
 # 確保 output 資料夾存在
 if not os.path.exists('output'):
     os.makedirs('output')
@@ -59,3 +64,5 @@ if not os.path.exists('output'):
 # 寫入 output_transcript.txt 檔案
 with open('output/output_transcript.txt', 'w') as file:
     file.write(full_transcript)
+    file.write("\n\n------\n\n")
+    file.write(timestamped_transcript)
