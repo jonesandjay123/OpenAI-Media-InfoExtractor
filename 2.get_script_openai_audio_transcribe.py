@@ -3,6 +3,7 @@ import os
 
 # Set the language of the transcription
 language = "zh"  # Use "en" for English and "zh" for Chinese
+max_tokens = 4000 # max_tokens for gpt3.5 is 4000 for for gpt4 could be more
 
 # Read API key from file
 with open("api_key.txt", "r") as f:
@@ -29,10 +30,22 @@ if transcript is not None:
         os.makedirs(output_dir)
 
     # Save transcript to a .txt file
-    output_file_path = os.path.join(output_dir, "output_transcript.txt")
-    with open(output_file_path, "w", encoding="utf-8") as f:
-        f.write(transcript)
+    file_index = 0
+    start = 0
+    while start < len(transcript):
+        end = start + max_tokens
+        if end < len(transcript):
+            end = transcript.rfind(' ', start, end)
+            if end == -1:
+                end = start + max_tokens
 
-    print(f"文字內容已保存到 {output_file_path} 檔案中。")
+        output_file_path = os.path.join(output_dir, f"output_transcript{file_index}.txt")
+        with open(output_file_path, "w", encoding="utf-8") as f:
+            f.write(transcript[start:end])
+
+        print(f"文字內容已保存到 {output_file_path} 檔案中。")
+
+        start = end + 1
+        file_index += 1
 else:
     print("由於錯誤，未能生成文字檔案。")
