@@ -2,7 +2,7 @@ import torch
 import whisper
 
 # 載入模型
-model = whisper.load_model("tiny")
+model = whisper.load_model("tiny") # tiny, base, small, medium, large
 
 # 讀取音頻檔案並將其裁剪或填充為30秒
 audio = whisper.load_audio('audio/sample.mp3')
