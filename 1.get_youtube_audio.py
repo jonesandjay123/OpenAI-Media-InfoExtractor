@@ -2,8 +2,8 @@ from pytube import YouTube
 import os
   
 # your_video_id = "ocUVg221CCQ" # Englisg Sample
-# your_video_id = "L_Guz73e6fw" # OpenAI interview more than 25 MB
-your_video_id = "OIx3XDQc3D4" # Chinese Sample
+your_video_id = "L_Guz73e6fw" # OpenAI interview more than 25 MB
+# your_video_id = "OIx3XDQc3D4" # Chinese Sample
 url = "https://www.youtube.com/watch?v=" + your_video_id
 
 # url input from user

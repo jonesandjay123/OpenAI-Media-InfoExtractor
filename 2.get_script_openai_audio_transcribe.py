@@ -3,7 +3,7 @@ import os
 
 # Set the language of the transcription
 language = "zh"  # Use "en" for English and "zh" for Chinese
-max_tokens = 4000 # max_tokens for gpt3.5 is 4000 for for gpt4 could be more
+max_tokens = 3000  # max_tokens for gpt3.5 is 4096, but use 3950 to account for additional message tokens
 
 # Read API key from file
 with open("api_key.txt", "r") as f:
